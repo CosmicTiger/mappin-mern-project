@@ -30,7 +30,9 @@ router.post("/login", async (req, res) => {
         // find user
         const user = await User.findOne({ username: req.body.username });
 
-        !user && res.status(400).json({ message: "Invalid username or password" });
+        if (!user) {
+            return res.status(400).json({ message: "Invalid username or password" });
+        }
 
         // check password
         const validPassword = await bcrypt.compare(
@@ -38,7 +40,9 @@ router.post("/login", async (req, res) => {
             user.password
         );
 
-        !validPassword && res.status(400).json({ message: "Invalid username or password" });
+        if (!validPassword) {
+            return res.status(400).json({ message: "Invalid username or password" });
+        }
 
         // send response
         res.status(200).json({ _id: user._id, username: user.username });
