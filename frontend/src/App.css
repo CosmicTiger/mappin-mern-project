@@ -1,0 +1,34 @@
+.App {
+}
+
+.Card {
+	display: flex;
+	flex-direction: column;
+	height: 250px;
+	justify-content: space-around;
+	width: 250px;
+}
+
+.Card label {
+	border-bottom: 0.5px solid tomato;
+	color: tomato;
+	font-size: 13px;
+	margin: 3px 0;
+	width: max-content;
+}
+
+.Card-description {
+	font-size: 14px;
+}
+
+.Card-ratingIcon {
+  color: gold;
+}
+
+.Card-usernameAuthor {
+  font-size: 14px;
+}
+
+.Card-publicationDate {
+  font-size: 12px;
+}
