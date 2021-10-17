@@ -8,10 +8,13 @@ import { format } from 'timeago.js';
 import './App.css';
 
 function App() {
-  const currentUser = "jane";
+  const currentUser = "reiner";
   const [pins, setPins] = useState([]);
   const [currentPlaceId, setCurrentPlaceId] = useState(null);
   const [newPlace, setNewPlace] = useState(null);
+  const [title, setTitle] = useState(null);
+  const [description, setDescription] = useState(null);
+  const [rating, setRating] = useState(0);
   const [viewport, setViewport] = useState({
     width: '100vw',
     height: '100vh',
@@ -43,6 +46,27 @@ function App() {
     });
   }
 
+  const handleSubmit = async e => {
+    e.preventDefault();
+    const newPin = {
+      username: currentUser,
+      title,
+      description,
+      rating,
+      latitude: newPlace.latitude,
+      longitude: newPlace.longitude,
+    }
+
+    try {
+      const response = await axios.post("/pins", newPin);
+      setPins([...pins, response.data]);
+      setNewPlace(null);
+    }
+    catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     const getPins = async () => {
       try {
@@ -69,7 +93,11 @@ function App() {
         {
           pins && pins.map(pin => (
             <>
-              <Marker latitude={pin.latitude} longitude={pin.longitude} offsetLeft={-20} offsetTop={-10}>
+              <Marker
+                latitude={pin.latitude}
+                longitude={pin.longitude}
+                offsetLeft={-viewport.zoom * 3.5}
+                offsetTop={-viewport.zoom * 7}>
                 <RoomIcon
                   style={{
                     fontSize: viewport.zoom * 7,
@@ -94,11 +122,7 @@ function App() {
                     <p className="Card-description">{pin.description}</p>
                     <label>Rating</label>
                     <div className="Card-rating">
-                      <StarIcon className="Card-ratingIcon" />
-                      <StarIcon className="Card-ratingIcon" />
-                      <StarIcon className="Card-ratingIcon" />
-                      <StarIcon className="Card-ratingIcon" />
-                      <StarIcon className="Card-ratingIcon" />
+                      {Array(pin.rating).fill(<StarIcon className="Card-ratingIcon" />)}
                     </div>
                     <label>Information</label>
                     <span className="Card-usernameAuthor"> Created by <b>{pin.username}</b></span>
@@ -118,13 +142,26 @@ function App() {
             onClose={() => setNewPlace(null)}
             anchor="left">
             <div>
-              <form>
+              <form
+                onSubmit={handleSubmit}
+              >
                 <label>Title</label>
-                <input placeholder="Enter a title" type="text" name="title" />
+                <input
+                  placeholder="Enter a title"
+                  type="text"
+                  name="title"
+                  onChange={(e) => setTitle(e.target.value)} />
                 <label>Review</label>
-                <input placeholder="Say your opinions about this place" type="text" name="review" />
+                <input
+                  placeholder="Say your opinions about this place"
+                  type="text"
+                  name="review"
+                  onChange={(e) => setDescription(e.target.value)}
+                />
                 <label>Rating</label>
-                <select>
+                <select
+                  onChange={(e) => setRating(e.target.value)}
+                >
                   {fillingOptions()}
                 </select>
                 <button className="submitButton" type="submit">Add Pin</button>
