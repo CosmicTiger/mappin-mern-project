@@ -1,0 +1,49 @@
+.Login {
+	align-items: center;
+	background-color: white;
+	border-radius: 10px;
+	bottom: 0;
+	display: flex;
+	flex-direction: column;
+	height: 200px;
+	justify-content: space-between;
+	margin: auto;
+	left: 0;
+	padding: 20px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 300px;
+}
+
+.Login-logo {
+	align-items: center;
+	color: teal;
+	display: flex;
+	font-weight: 700;
+}
+
+.Login-button {
+	background-color: teal;
+	border: none;
+	border-radius: 5px;
+	color: white;
+	padding: 5px;
+}
+
+.Login-closeButton {
+	color: teal;
+	position: absolute;
+	right: 5px;
+	top: 5px;
+	cursor: pointer;
+}
+
+.Alerts {
+	font-size: 12px;
+	text-align: center;
+}
+
+.failure {
+	color: red;
+}
