@@ -7,14 +7,20 @@ import { format } from 'timeago.js';
 
 import './App.css';
 
+import Login from './components/Login';
+import Register from './components/Register';
+
 function App() {
-  const currentUser = "reiner";
+  const myStorage = window.localStorage;
+  const [currentUser, setCurrentUser] = useState(null);
   const [pins, setPins] = useState([]);
   const [currentPlaceId, setCurrentPlaceId] = useState(null);
   const [newPlace, setNewPlace] = useState(null);
   const [title, setTitle] = useState(null);
   const [description, setDescription] = useState(null);
   const [rating, setRating] = useState(0);
+  const [showRegister, setShowRegister] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
   const [viewport, setViewport] = useState({
     width: '100vw',
     height: '100vh',
@@ -79,6 +85,11 @@ function App() {
 
     getPins();
   }, [])
+
+  const handleLogout = () => {
+    myStorage.removeItem('user');
+    setCurrentUser(null);
+  }
 
   return (
     <div className="App">
@@ -169,6 +180,38 @@ function App() {
             </div>
           </Popup>
         )}
+        <div className="auth-controls">
+          {currentUser ? (
+            <button
+              className="button logout"
+              onClick={handleLogout}
+            >
+              Log out
+            </button>
+          ) : (
+            <>
+              <button
+                className="button login"
+                onClick={() => setShowLogin(true)}
+              >
+                Login
+              </button>
+              <button
+                className="button register"
+                onClick={() => setShowRegister(true)}
+              >
+                Register
+              </button>
+            </>
+          )}
+        </div>
+        {showRegister && <Register setShowRegister={setShowRegister} />}
+        {showLogin &&
+          <Login
+            setShowLogin={setShowLogin}
+            myStorage={myStorage}
+            setCurrentUser={setCurrentUser}
+          />}
       </ReactMapGL>
     </div>
   );

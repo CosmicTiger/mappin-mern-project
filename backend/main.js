@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+// const cors = require("cors");
 const pinRoute = require("./routes/Pins.routes");
 const userRoute = require("./routes/User.routes");
 
@@ -8,6 +9,7 @@ const app = express();
 
 dotenv.config();
 app.use(express.json());
+// app.use(cors({ origin: 'http://localhost:3000' }));
 
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
